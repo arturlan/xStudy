@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+const pgp = require('pg-promise')();
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -12,6 +13,7 @@ var app = express();
 app.listen(3000, function() {
     console.log('server is listening on port 3000');
 });
+var db = pgp('postgres://arturlan@localhost:5432/interview_db');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

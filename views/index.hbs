@@ -11,8 +11,8 @@
         <div class="col-xs-6 col-md-6"></div>
         <div class="col-xs-3 col-md-3">
         </div>
-        <div class="col-xs-2 col-md-2" id="login"><a href="/login" style="text-decoration:none">Log In</a></div>
-        <div class="col-xs-1 col-md-1" id="signup"><a href="/signup" style="text-decoration:none">Sign up</a></div>
+        <div class="col-xs-2 col-md-2" id="login"><a href="/users/login" style="text-decoration:none">Log In</a></div>
+        <div class="col-xs-1 col-md-1" id="signup"><a href="/users/signup" style="text-decoration:none">Sign up</a></div>
     </div>
     {{!-- logo --}}
     <div class="row">
@@ -26,15 +26,15 @@
     <div class="row">
         <div class="col-xs-1 col-md-3"></div>
         <div class="col-xs-10 col-md-6">
-            <input type="text" class="form-control" placeholder="Text input">
+            <form name='test' method="post" action="/">
+                <input type="text" class="form-control" placeholder="Text input" name="query">
+            </form>
         </div>
         <div class="col-xs-1 col-md-3"></div>
     </div>
     <div class="row">
         <div class="col-xs-1 col-md-3"></div>
         <div class="col-xs-10 col-md-6">
-            {{#each questions}}
-            <h3>{{question}} is {{answer}}</h3> {{/each}}
         </div>
         <div class="col-xs-1 col-md-3"></div>
     </div>
