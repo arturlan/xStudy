@@ -10,9 +10,7 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
-app.listen(3000, function() {
-    console.log('server is listening on port 3000');
-});
+app.listen(3000);
 var db = pgp('postgres://arturlan@localhost:5432/interview_db');
 
 // view engine setup
