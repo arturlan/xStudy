@@ -10,9 +10,9 @@
         <div class="col-xs-6 col-md-6"></div>
         <div class="col-xs-2 col-md-2">
         </div>
-        <div class="col-xs-1 col-md-1"><a href="/users/{{#each user}}{{id}}{{/each}}/yourlist" style="text-decoration:none; color:black">Your list</a>
+        <div class="col-xs-1 col-md-1"><a href="/" style="text-decoration:none; color:black">Your list</a>
         </div>
-        <div class="col-xs-1 col-md-1" id="signup"><a href="/users/{{#each user}}{{id}}{{/each}}/addtolist" style="text-decoration:none; color: black">Add to list</a></div>
+        <div class="col-xs-1 col-md-1" id="signup"><a href="/users/{{#each user}}{{id}}{{/each}}/addtolist" style="text-decoration:none; color: red">Add to list</a></div>
         <div class="col-xs-1 col-md-1" id="login">
             <p style="color: red">{{#each user}}{{name}}{{/each}}</p>
         </div>
@@ -26,12 +26,21 @@
         </div>
         <div class="col-xs-1 col-md-3"></div>
     </div>
-    {{!-- search bar --}}
+    {{!-- question form --}}
     <div class="row">
         <div class="col-xs-1 col-md-3"></div>
         <div class="col-xs-10 col-md-6">
-            <form name='test' method="post" action="/users/signedin">
-                <input type="text" class="form-control" placeholder="Text input" name="query">
+            <form name='question' method="post" action="/users/{{#each user}}{{id}}{{/each}}/yourlist">
+                <input type="text" class="form-control" placeholder="Question" name="question">
+                <br>
+                <textarea class="form-control" rows="3" placeholder="Answer" name="answer"></textarea><br>
+                    <div class="row">
+                    <div class="col-xs-5 col-md-5"></div>
+                    <div class="col-xs-2 col-md-2">
+                        <button type="submit" class="btn btn-success" style="position: right">Edit it</button>
+                    </div>
+                    <div class="col-xs-5 col-md-5"></div>
+                </div> 
             </form>
         </div>
         <div class="col-xs-1 col-md-3"></div>

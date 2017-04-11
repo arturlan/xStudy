@@ -71,7 +71,7 @@ router.post('/', function(req, res, next) {
             for (var i = 0; i < arrOfTitles.length; i++) {
                 obj[arrOfTitles[i]] = arrOfAnswers;
             }
-            console.log(Object.values(obj));
+            // console.log(Object.values(obj));
             var render = renderingHtml(obj);
             res.send(render);
 

@@ -3,14 +3,26 @@
 
 <head>
     <title></title>
-</head>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <style>
+            #a {font-family: 'Open Sans', sans-serif;}
+            #q {font-family: 'Open Sans', sans-serif;
+                font-size: 20px;
+                margin-top: 20px;}
+            #edit, #delete {
+                margin: 20px 20px 20px 20px;
+                position: relative;
+                left: 75%;   
+            }
 
+    </style>
+</head>
 <body>
     <div class="row" id="header">
         <div class="col-xs-6 col-md-6"></div>
         <div class="col-xs-2 col-md-2">
         </div>
-        <div class="col-xs-1 col-md-1"><a href="/users/{{#each user}}{{id}}{{/each}}/yourlist" style="text-decoration:none; color:black">Your list</a>
+        <div class="col-xs-1 col-md-1"><a href="/users/{{#each user}}{{id}}{{/each}}/yourlist" style="text-decoration:none; color: red">Your list</a>
         </div>
         <div class="col-xs-1 col-md-1" id="signup"><a href="/users/{{#each user}}{{id}}{{/each}}/addtolist" style="text-decoration:none; color: black">Add to list</a></div>
         <div class="col-xs-1 col-md-1" id="login">
@@ -26,20 +38,16 @@
         </div>
         <div class="col-xs-1 col-md-3"></div>
     </div>
-    {{!-- search bar --}}
+    {{!-- questions list --}}
     <div class="row">
         <div class="col-xs-1 col-md-3"></div>
         <div class="col-xs-10 col-md-6">
-            <form name='test' method="post" action="/users/signedin">
-                <input type="text" class="form-control" placeholder="Text input" name="query">
-            </form>
-        </div>
-        <div class="col-xs-1 col-md-3"></div>
-    </div>
-    <div class="row">
-        <div class="col-xs-1 col-md-3"></div>
-        <div class="col-xs-10 col-md-6">
+            {{#each questions}}
+            <p style="background: #ff7f50" id="q">{{question}}</p>
+            <p style="background: #cfcf30" id="a">{{answer}}</p>
+            <a href="/users/{{#each user}}{{id}}{{/each}}/edit" id="edit">edit</a><a href="" id="delete">delete</a>
 
+            {{/each}}
         </div>
         <div class="col-xs-1 col-md-3"></div>
     </div>
