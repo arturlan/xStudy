@@ -30,10 +30,10 @@
     <div class="row">
         <div class="col-xs-1 col-md-3"></div>
         <div class="col-xs-10 col-md-6">
-            <form name='question' method="post" action="/users/{{#each user}}{{id}}{{/each}}/yourlist">
-                <input type="text" class="form-control" placeholder="Question" name="question">
+            <form name='question' method="post" action="/users/{{#each user}}{{id}}{{/each}}/yourlist/{{#each questions}}{{id}}{{/each}}?_method=PUT">
+                <input type="text" class="form-control" placeholder="Question" name="question" value="{{#each questions}}{{question}}{{/each}}">
                 <br>
-                <textarea class="form-control" rows="3" placeholder="Answer" name="answer"></textarea><br>
+                <textarea type="text" class="form-control" rows="5" placeholder="Answer" name="answer" value="">{{#each questions}}{{answer}}{{/each}}</textarea><br>
                     <div class="row">
                     <div class="col-xs-5 col-md-5"></div>
                     <div class="col-xs-2 col-md-2">

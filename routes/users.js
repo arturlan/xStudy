@@ -144,11 +144,11 @@ var renderingHtml = function(obj) {
     var css = '#login {text-align: right; } #header {margin-top: 30px;} h1, h5, h3 {font-family: "Libre Franklin", sans-serif;}';
     var jq = '$(document).ready(function() {$("h3").click(function () {var $stext = $(this).next("h5").stop(true, true);if ( $stext.is( ":hidden" ) ) {$stext.slideDown(300);} else {$stext.hide();}});});'
     var start = '<!DOCTYPE html><html><head><title>Results</title><link href="https://fonts.googleapis.com/css?family=Josefin+Sans|Libre+Franklin" rel="stylesheet"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"><script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="crossorigin="anonymous"></script><script>' + jq + '</script></head><style>' + css + '</style><body>';
-    var middle = '<div class="row" id="header"><div class="col-xs-6 col-md-6"></div><div class="col-xs-3 col-md-3"></div><div class="col-xs-2 col-md-2" id="login"><p style="color: red">Bill Murray</p></div><div class="col-xs-1 col-md-1" id="signup"><a href="/" style="text-decoration:none">Log out</a></div></div><div class="row"><div class="col-xs-1 col-md-3"></div><div class="col-xs-10 col-md-6" id="logo"><img src="/images/logo.png" class="img-responsive center-block"></div><div class="col-xs-1 col-md-3"></div></div><div class="row"><div class="col-xs-1 col-md-3"></div><div class="col-xs-10 col-md-6"><form name="test" method="post" action="/users/signedin"><input type="text" class="form-control" placeholder="Text input" name="query"></form></div><div class="col-xs-1 col-md-3"></div></div>'
+    var middle = '<div class="row" id="header"><div class="col-xs-6 col-md-6"></div><div class="col-xs-2 col-md-2"></div><div class="col-xs-1 col-md-1"><a href="/users/28/yourlist" style="text-decoration:none; color:black">Your list</a></div><div class="col-xs-1 col-md-1" id="signup"><a href="/users/28/addtolist" style="text-decoration:none; color: black">Add to list</a></div><div class="col-xs-1 col-md-1" id="login"><p style="color: red">Bill Murray</p></div><div class="col-xs-1 col-md-1" id="signup"><a href="/" style="text-decoration:none">Log out</a></div></div><div class="row"><div class="col-xs-1 col-md-3"></div><div class="col-xs-10 col-md-6" id="logo"><img src="/images/logo.png" class="img-responsive center-block"></div><div class="col-xs-1 col-md-3"></div></div><div class="row"><div class="col-xs-1 col-md-3"></div><div class="col-xs-10 col-md-6"><form name="test" method="post" action="/users/signedin"><input type="text" class="form-control" placeholder="Text input" name="query"></form></div><div class="col-xs-1 col-md-3"></div></div>'
 
     Object.keys(obj).forEach(function(e) {
         Object.values(obj).forEach(function(a) {
-            console.log(a);
+            // console.log(a);
             arrOfTitles += '<h3>' + e + '</h3><h5 style="display:none">' + a + '<br><hr><hr>' + '</h5>';
         })
 
@@ -205,13 +205,58 @@ router.get('/:id/yourlist', function(req, res, next) {
         })
 });
 
+
 /*edit a question */
-router.get('/:id/edit', function(req, res, next) {
+router.get('/:id/edit/:qid', function(req, res, next) {
     const userid = req.params.id;
     const qid = req.params.qid;
-    console.log(userid);
-    console.log(qid);
-    res.render('edit');
+    knex('client')
+        .select()
+        .where('id', userid)
+        .then(user => {
+            // res.render('yourlist', { user: user });
+            knex('question')
+                .where('id', qid)
+                .then(questions => {
+                    res.render('edit', { user: user, questions: questions });
+                })
+        })
+});
+
+router.put('/:id/yourlist/:qid', function(req, res, next) {
+    const userid = req.params.id;
+    const qid = req.params.qid;
+    knex('client')
+        .where('id', userid)
+        .then(user => {
+            // res.render('yourlist', { user: user });
+            knex('question')
+                .where('id', qid)
+                .update({
+                    question: req.body.question,
+                    answer: req.body.answer
+                })
+                .then(questions => {
+                    res.redirect('/users/28/yourlist');
+                })
+        })
+});
+
+/*delete a question */
+router.delete('/:id/delete/:qid', function(req, res, next) {
+    const userid = req.params.id;
+    const qid = req.params.qid;
+    knex('client')
+        .where('id', userid)
+        .then(user => {
+            // res.render('yourlist', { user: user });
+            knex('question')
+                .where('id', qid)
+                .del()
+                .then(questions => {
+                    res.redirect('/users/28/yourlist');
+                })
+        })
 });
 
 /****************************************/
@@ -227,6 +272,7 @@ router.get('/usersearch/:id', function(req, res, next) {
             /****************************************/
         })
 });
+
 
 router.post('/usersearch/:id', function(req, res, next) {
     const userid = req.params.id;

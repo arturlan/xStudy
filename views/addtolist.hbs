@@ -3,12 +3,21 @@
 
 <head>
     <title></title>
+        <style>
+            #stackOverflow {
+                margin: 10px 10px 10px 20px;
+            }
+
+    </style>
 </head>
 
 <body>
     <div class="row" id="header">
-        <div class="col-xs-6 col-md-6"></div>
-        <div class="col-xs-2 col-md-2">
+        <div class="col-xs-1 col-md-1"><a href="/users/signedin/{{#each user}}{{id}}{{/each}}" id="stackOverflow" style="text-decoration:none; color: black">StackOverflow</a></div>
+        <div class="col-xs-1 col-md-1">
+        </div>
+        <div class="col-xs-5 col-md-5"></div>
+        <div class="col-xs-1 col-md-1">
         </div>
         <div class="col-xs-1 col-md-1"><a href="/users/{{#each user}}{{id}}{{/each}}/yourlist" style="text-decoration:none; color:black">Your list</a>
         </div>
