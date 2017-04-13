@@ -140,7 +140,7 @@ router.post('/signedin', function(req, res, next) {
 });
 
 var renderingHtml = function(obj) {
-    var arrOfTitles = '<h1>All possible answers:</h1>';
+    var arrOfTitles = '<h1 style="color: red">All possible answers:</h1>';
     var css = '#login {text-align: right; } #header {margin-top: 30px;} h1, h5, h3 {font-family: "Libre Franklin", sans-serif;}';
     var jq = '$(document).ready(function() {$("h3").click(function () {var $stext = $(this).next("h5").stop(true, true);if ( $stext.is( ":hidden" ) ) {$stext.slideDown(300);} else {$stext.hide();}});});'
     var start = '<!DOCTYPE html><html><head><title>Results</title><link href="https://fonts.googleapis.com/css?family=Josefin+Sans|Libre+Franklin" rel="stylesheet"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"><script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="crossorigin="anonymous"></script><script>' + jq + '</script></head><style>' + css + '</style><body>';
@@ -258,94 +258,6 @@ router.delete('/:id/delete/:qid', function(req, res, next) {
                 })
         })
 });
-
-/****************************************/
-router.get('/usersearch/:id', function(req, res, next) {
-    const userid = req.params.id;
-    console.log('this is my userid  ' + userid);
-    knex('client')
-        .where('id', userid)
-        .then(user => {
-            res.render('usersearch', { user: user });
-            // res.redirect('/signedin/:id', user.id)
-            /****************************************/
-            /****************************************/
-        })
-});
-
-
-router.post('/usersearch/:id', function(req, res, next) {
-    const userid = req.params.id;
-    // console.log(userid);
-    knex('client')
-        .where('id', userid)
-        .then(user => {
-            // res.render('signedin', { user: user });
-
-
-            var query = req.body.query;
-            var searchUrl = url + searchUrlAppend + encodeURIComponent(query.trim());
-            var index = 0;
-            var arrOfAnswers = [];
-            // console.log(searchUrl);
-            /*This is for JSON parsing titles and ids*/
-            var response = request({
-                method: 'GET',
-                uri: searchUrl,
-                gzip: true
-            }, function(error, response, body) {
-                var arrOfTitles = [];
-                var obj = {};
-                var firstChar = body.substring(0, 1);
-                var firstCharCode = body.charCodeAt(0);
-                if (firstCharCode == 65279) {
-                    console.log('First character "' + firstChar + '" (character code: ' + firstCharCode + ') is invalid so removing it.');
-                    body = body.substring(1);
-                }
-
-                var parsedJson = JSON.parse(body);
-                var arr = parsedJson.items;
-                arr.forEach(function(item) {
-                    if (index < 1) {
-
-                        arrOfTitles.push(item.title);
-                        /*This is for getting answers*/
-                        // gettingAnswers(item.question_id);
-                        var urlForAnswers = url + 'questions/' + item.question_id + questionAnswerUrlAppend;
-                        console.log(urlForAnswers);
-                        fetch(urlForAnswers)
-                            .then(function(t) {
-                                return t.json();
-                            })
-                            .then(function(json) {
-                                // console.log('this is body'+json.items[0].body);
-                                json.items.forEach(function(item) {
-                                    arrOfAnswers.push(item.body);
-
-                                })
-                                update();
-                            })
-                    }
-                    index++;
-                })
-
-                function update() {
-                    for (var i = 0; i < arrOfTitles.length; i++) {
-                        obj[arrOfTitles[i]] = arrOfAnswers;
-                    }
-                    // console.log(Object.values(obj));
-                    var render = renderingHtml(obj);
-                    // res.send(render);
-                    /****************************************/
-                    res.render('usersearch', { obj: obj, user: user });
-                    // console.log(obj);
-                    /****************************************/
-                }
-
-            })
-        })
-});
-
 
 
 // log in
